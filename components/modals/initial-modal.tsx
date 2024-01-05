@@ -3,6 +3,7 @@
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { zodResolver } from "@hookform/resolvers/zod";
+import axios from "axios";
 import {
   Dialog,
   DialogContent,
@@ -51,7 +52,12 @@ export const InitialModal = () => {
   const isLoading = form.formState.isSubmitting;
 
   const onSubmit = async (values: z.infer<typeof fromSchema>) => {
-    console.log("values", values);
+    try {
+      await axios.post("/api/servers", values);
+      form.reset();
+    } catch (error) {
+      console.log("error", error);
+    }
   };
 
   if (!isMounted) {
